@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-08-05T19:08:12+00:00",
+  "bundles": {
+    "critical": {
+      "css": "/public/dashboard/optimized/critical/critical.min.css",
+      "js": "/public/dashboard/optimized/js/core.bundle.js"
+    },
+    "vendor": {
+      "css": "/public/dashboard/optimized/css/vendor.bundle.css",
+      "js": "/public/dashboard/optimized/js/vendor.bundle.js"
+    },
+    "lazy": {
+      "datatables": "/public/dashboard/optimized/js/datatables.lazy.js"
+    }
+  },
+  "preload": [
+    "/public/dashboard/optimized/critical/critical.min.css",
+    "/public/dashboard/optimized/js/core.bundle.js"
+  ],
+  "prefetch": [
+    "/public/dashboard/optimized/js/datatables.lazy.js"
+  ]
+}
