@@ -1,0 +1,1 @@
+__ci_last_regenerate|i:1735635257;_ci_previous_url|s:51:"http://localhost/EmployeesManagement/forgotpassword";success|s:41:"A password reset link has been generated.";__ci_vars|a:2:{s:7:"success";s:3:"old";s:9:"resetLink";s:3:"old";}resetLink|s:61:"http://localhost/EmployeesManagement/auth/reset_password/MQ==";

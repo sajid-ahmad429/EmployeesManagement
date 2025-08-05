@@ -1,0 +1,494 @@
+{
+    "data": [
+        {
+            "serial_number": 1,
+            "department_id": "1",
+            "department_name": "Software Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 2,
+            "department_id": "2",
+            "department_name": "IT Support",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 3,
+            "department_id": "3",
+            "department_name": "Network Administration",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 4,
+            "department_id": "4",
+            "department_name": "System Administration",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 5,
+            "department_id": "5",
+            "department_name": "Database Administration",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 6,
+            "department_id": "6",
+            "department_name": "Cybersecurity",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 7,
+            "department_id": "7",
+            "department_name": "Cloud Computing",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 8,
+            "department_id": "8",
+            "department_name": "Artificial Intelligence",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 9,
+            "department_id": "9",
+            "department_name": "Data Science",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 10,
+            "department_id": "10",
+            "department_name": "Machine Learning",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 11,
+            "department_id": "11",
+            "department_name": "Business Intelligence",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 12,
+            "department_id": "12",
+            "department_name": "DevOps",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 13,
+            "department_id": "13",
+            "department_name": "Web Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 14,
+            "department_id": "14",
+            "department_name": "Mobile App Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 15,
+            "department_id": "15",
+            "department_name": "Game Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 16,
+            "department_id": "16",
+            "department_name": "Blockchain Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 17,
+            "department_id": "17",
+            "department_name": "UI\/UX Design",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 18,
+            "department_id": "18",
+            "department_name": "QA & Testing",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 19,
+            "department_id": "19",
+            "department_name": "Project Management",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 20,
+            "department_id": "20",
+            "department_name": "IT Infrastructure",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 21,
+            "department_id": "21",
+            "department_name": "Enterprise Architecture",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 22,
+            "department_id": "22",
+            "department_name": "Digital Transformation",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 23,
+            "department_id": "23",
+            "department_name": "IT Consulting",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 24,
+            "department_id": "24",
+            "department_name": "IT Operations",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 25,
+            "department_id": "25",
+            "department_name": "Networking And Communications",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 26,
+            "department_id": "26",
+            "department_name": "Software Engineering",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 27,
+            "department_id": "27",
+            "department_name": "IT Security",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 28,
+            "department_id": "28",
+            "department_name": "Data Analytics",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 29,
+            "department_id": "29",
+            "department_name": "Data Engineering",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 30,
+            "department_id": "30",
+            "department_name": "IT Audit",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 31,
+            "department_id": "31",
+            "department_name": "Cloud Architecture",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 32,
+            "department_id": "32",
+            "department_name": "Network Security",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 33,
+            "department_id": "33",
+            "department_name": "Information Technology Services",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 34,
+            "department_id": "34",
+            "department_name": "E-commerce Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 35,
+            "department_id": "35",
+            "department_name": "ERP Solutions",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 36,
+            "department_id": "36",
+            "department_name": "System Integration",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 37,
+            "department_id": "37",
+            "department_name": "IT Research And Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 38,
+            "department_id": "38",
+            "department_name": "Robotic Process Automation",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 39,
+            "department_id": "39",
+            "department_name": "IT Training And Education",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 40,
+            "department_id": "40",
+            "department_name": "Internet Of Things (IoT)",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 41,
+            "department_id": "41",
+            "department_name": "IT Governance",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 42,
+            "department_id": "42",
+            "department_name": "Software Maintenance",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 43,
+            "department_id": "43",
+            "department_name": "Server Management",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 44,
+            "department_id": "44",
+            "department_name": "Big Data Management",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 45,
+            "department_id": "45",
+            "department_name": "Tech Support Services",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 46,
+            "department_id": "46",
+            "department_name": "Telecommunications",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 47,
+            "department_id": "47",
+            "department_name": "Technology Innovation",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 48,
+            "department_id": "48",
+            "department_name": "IT Infrastructure Management",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 49,
+            "department_id": "49",
+            "department_name": "IT Strategy And Planning",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 50,
+            "department_id": "50",
+            "department_name": "Application Support",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 51,
+            "department_id": "51",
+            "department_name": "Business Systems Analysis",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 52,
+            "department_id": "52",
+            "department_name": "Help Desk Support",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 53,
+            "department_id": "53",
+            "department_name": "Cloud Solutions",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 54,
+            "department_id": "54",
+            "department_name": "Enterprise Resource Planning (ERP)",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 55,
+            "department_id": "55",
+            "department_name": "Digital Marketing And IT",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 56,
+            "department_id": "56",
+            "department_name": "E-Health Solutions",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 57,
+            "department_id": "57",
+            "department_name": "IT Asset Management",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 58,
+            "department_id": "58",
+            "department_name": "Data Privacy And Compliance",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 59,
+            "department_id": "59",
+            "department_name": "IT Disaster Recovery",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 60,
+            "department_id": "60",
+            "department_name": "Cybersecurity Operations",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 61,
+            "department_id": "61",
+            "department_name": "Telecom Engineering",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 62,
+            "department_id": "62",
+            "department_name": "Blockchain Solutions",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 63,
+            "department_id": "63",
+            "department_name": "IT Process Automation",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 64,
+            "department_id": "64",
+            "department_name": "IT Research",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 65,
+            "department_id": "65",
+            "department_name": "Software Testing And QA",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 66,
+            "department_id": "66",
+            "department_name": "IT Project Coordination",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 67,
+            "department_id": "67",
+            "department_name": "Business Systems Implementation",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 68,
+            "department_id": "68",
+            "department_name": "Application Development",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 69,
+            "department_id": "69",
+            "department_name": "IT Procurement",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        },
+        {
+            "serial_number": 70,
+            "department_id": "70",
+            "department_name": "Data Center Operations",
+            "status": "Active",
+            "created_at": "30 Dec 2024 07:35:03:pm"
+        }
+    ]
+}
