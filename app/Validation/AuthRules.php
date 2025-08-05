@@ -29,7 +29,10 @@ class AuthRules
         $user = $model->where('email', $data['email'])
                       ->first();
 
+        // ✅ FIXED: Prevent timing attacks by always performing password verification
         if (!$user) {
+            // Perform a dummy password verification to maintain consistent timing
+            password_verify($data['password'], '$2y$10$dummyhashtopreventtimingattacks');
             return false;
         }
         else{

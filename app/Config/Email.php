@@ -87,7 +87,7 @@ class Email extends BaseConfig
     /**
      * Whether to validate the email address
      */
-    public bool $validate = false;
+    public bool $validate = true; // ✅ FIXED: Enable email validation
 
     /**
      * Email Priority. 1 = highest. 5 = lowest. 3 = normal

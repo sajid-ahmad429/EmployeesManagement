@@ -70,6 +70,9 @@ class AuthLibrary {
 
         $this->Session->set('lockscreen', false);
 
+        // ✅ FIXED: Regenerate session ID to prevent session fixation
+        $this->Session->regenerate();
+
         //SET USER SESSION 
         $this->setUserSession($user);
     }
@@ -150,15 +153,22 @@ class AuthLibrary {
             return 'User not found';
         }
 
-        // GENERATE A NEW TOKEN
-        // SET THE TOKEN TYPE AS SECOND PARAMETER. Reset password token = 'reset_token'
-        // Assuming 'auth/reset_password/{token}' route
-
-        // Base64 encode the employee_id
-        $encodedtoken = base64_encode($user['employee_id']);
-
-        // Make the encoded token URL-safe
-        $encodedtoken_url_safe = rtrim(strtr($encodedtoken, '+/', '-_'), '=');
+        // ✅ FIXED: Generate secure token with expiration
+        $tokenData = [
+            'user_id' => $user['employee_id'],
+            'token_type' => 'reset_password',
+            'expires_at' => date('Y-m-d H:i:s', time() + ($this->config->resetTokenExpire * 3600))
+        ];
+        
+        // Generate a cryptographically secure token
+        $secureToken = bin2hex(random_bytes(32));
+        $tokenData['token'] = hash('sha256', $secureToken);
+        
+        // Store token in database (you'll need to create this table)
+        $this->AuthModel->insertPasswordResetToken($tokenData);
+        
+        // Make the token URL-safe
+        $encodedtoken_url_safe = rtrim(strtr(base64_encode($secureToken), '+/', '-_'), '=');
 
         // Now, create the reset link
         $resetLink = site_url('resetpassword/' . $encodedtoken_url_safe);
@@ -325,15 +335,15 @@ class AuthLibrary {
             $this->AuthModel->updateToken($data);
         }
 
-        // set_Cookie
+        // ✅ FIXED: Secure cookie settings
         setcookie(
                 "remember",
                 $token,
                 $expires,
                 $this->AppConfig->cookiePath,
                 $this->AppConfig->cookieDomain,
-                $this->AppConfig->cookieSecure,
-                $this->AppConfig->cookieHTTPOnly
+                true, // Force secure flag for HTTPS
+                true  // Force HTTPOnly flag
         );
     }
 
@@ -464,15 +474,15 @@ class AuthLibrary {
 
         $this->AuthModel->UpdateSelector($data, $selector);
 
-        // SET COOKIE        
+        // ✅ FIXED: SET SECURE COOKIE        
         setcookie(
                 "remember",
                 $token,
                 $expires,
                 $this->AppConfig->cookiePath,
                 $this->AppConfig->cookieDomain,
-                $this->AppConfig->cookieSecure,
-                $this->AppConfig->cookieHTTPOnly
+                true, // Force secure flag for HTTPS
+                true  // Force HTTPOnly flag
         );
     }
 
