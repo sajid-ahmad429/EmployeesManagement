@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Config\Services;
 
 class EmployeeDataTableModel extends Model {
 
@@ -20,6 +21,7 @@ class EmployeeDataTableModel extends Model {
      */
     public function __construct() {
         parent::__construct();
+        $this->cache = Services::cache();
     }
 
     private function getBaseQuery() {
@@ -32,6 +34,21 @@ class EmployeeDataTableModel extends Model {
     }
 
     public function get_datatables($data_where) {
+        // Generate cache key based on parameters
+        $cacheKey = 'employee_datatables_' . md5(serialize([
+            'where' => $data_where,
+            'search' => $_POST['search']['value'] ?? '',
+            'order' => $_POST['order'] ?? [],
+            'start' => $_POST['start'] ?? 0,
+            'length' => $_POST['length'] ?? 10
+        ]));
+        
+        // Try to get from cache first
+        $cachedResult = $this->cache->get($cacheKey);
+        if ($cachedResult !== null) {
+            return $cachedResult;
+        }
+        
         $builder = $this->getBaseQuery();
         
         // Apply additional where conditions
@@ -50,7 +67,12 @@ class EmployeeDataTableModel extends Model {
             $builder->limit($_POST['length'], $_POST['start'] ?? 0);
         }
 
-        return $builder->get()->getResultArray();
+        $result = $builder->get()->getResultArray();
+        
+        // Cache the result for 5 minutes
+        $this->cache->save($cacheKey, $result, 300);
+        
+        return $result;
     }
 
     public function count_InActiveRecordsfiltered($data_where) {

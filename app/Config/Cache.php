@@ -54,7 +54,7 @@ class Cache extends BaseConfig
      * This string is added to all cache item names to help avoid collisions
      * if you run multiple applications with the same cache engine.
      */
-    public string $prefix = '';
+    public string $prefix = 'ems_';
 
     /**
      * --------------------------------------------------------------------------
@@ -67,7 +67,7 @@ class Cache extends BaseConfig
      * hard-coded, but may be useful to projects and modules. This will replace
      * the hard-coded value in a future release.
      */
-    public int $ttl = 60;
+    public int $ttl = 3600; // Increased to 1 hour for better performance
 
     /**
      * --------------------------------------------------------------------------
@@ -129,6 +129,11 @@ class Cache extends BaseConfig
         'port'     => 6379,
         'timeout'  => 0,
         'database' => 0,
+        'read_timeout' => 0,
+        'retry_interval' => 0,
+        'compression' => false,
+        'serializer' => 'php',
+        'persistent' => true, // Enable persistent connections for better performance
     ];
 
     /**
