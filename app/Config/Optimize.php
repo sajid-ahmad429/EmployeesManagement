@@ -19,14 +19,14 @@ class Optimize
      *
      * @see https://codeigniter.com/user_guide/concepts/factories.html#config-caching
      */
-    public bool $configCacheEnabled = false;
+    public bool $configCacheEnabled = true;
 
     /**
      * --------------------------------------------------------------------------
-     * Config Caching
+     * File Locator Caching
      * --------------------------------------------------------------------------
      *
      * @see https://codeigniter.com/user_guide/concepts/autoloader.html#file-locator-caching
      */
-    public bool $locatorCacheEnabled = false;
+    public bool $locatorCacheEnabled = true;
 }

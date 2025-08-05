@@ -8,9 +8,9 @@ class EmployeeDataTableModel extends Model {
 
     protected $table = 'employee';
     protected $allowedFields = ['employee_id', 'employee_name', 'status', 'trash', 'created_at', 'updated_at'];
-    var $column_order = array('emp.employee_id', 'emp.employee_id', 'dp.employee_name', 'dp.department_name', 'emp.salary', 'emp.designation', 'emp.employee_type', 'emp.status', 'dp.created_at',); //set column field database for datatable orderable
-    var $column_search = array('emp.employee_id', 'emp.employee_id', 'dp.employee_name', 'dp.department_name', 'emp.salary', 'emp.designation'); //set column field database for datatable searchable 
-    var $order = array('emp.employee_id' => 'DESC', 'dp.employee_name' => 'ASC', 'dp.created_at' => 'DESC'); // default order     
+    var $column_order = array('emp.employee_id', 'emp.employee_id', 'emp.employee_name', 'dp.department_name', 'emp.salary', 'emp.designation', 'emp.employee_type', 'emp.status', 'emp.created_at'); //set column field database for datatable orderable
+    var $column_search = array('emp.employee_id', 'emp.employee_name', 'dp.department_name', 'emp.salary', 'emp.designation'); //set column field database for datatable searchable 
+    var $order = array('emp.employee_id' => 'DESC', 'emp.employee_name' => 'ASC', 'emp.created_at' => 'DESC'); // default order     
 
     /**
      * Saves the employee login session to DB
@@ -22,157 +22,115 @@ class EmployeeDataTableModel extends Model {
         parent::__construct();
     }
 
-    private function _get_datatables_query($data_where) {
+    private function getBaseQuery() {
         $db = \Config\Database::connect();
         $builder = $db->table('employee as emp');
-        $builder->select('emp.*,dp.department_name');
+        $builder->select('emp.employee_id, emp.employee_name, emp.salary, emp.designation, emp.employee_type, emp.status, emp.created_at, emp.updated_at, dp.department_name');
+        $builder->join('department as dp', 'dp.department_id = emp.department_id', 'left');
         $builder->where('emp.status !=', 2);
-        $i = 0;
-        foreach ($this->column_search as $item) { // loop column 
-            if ($_POST['search']['value']) { // if datatable send POST for search
-                if ($i === 0) { // first loop
-                    $builder->where($data_where);
-                    $builder->like($item, $_POST['search']['value']);
-                } else {
-                    $builder->orLike($item, $_POST['search']['value']);
-                    $builder->where($data_where);
-                }
-            }
-            $i++;
-        }
-        if (isset($_POST['order'])) { // here order processing
-            $builder->where($data_where);
-            $builder->orderBy($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else if (isset($this->order)) {
-            $builder->where($data_where);
-            $order = $this->order;
-            $builder->orderBy(key($order), $order[key($order)]);
-        }
-
-        die;
+        return $builder;
     }
 
     public function get_datatables($data_where) {
-        $db = \Config\Database::connect();
-
-        $builder = $db->table('employee as emp');
-        $builder->select('emp.*,dp.department_name');
-        $builder->where('emp.status !=', 2);
-
-        $i = 0;
-        if (isset($_POST['search']['value']) && $_POST['search']['value'] != '' && $_POST['search']['value'] != null) {
-            foreach ($this->column_search as $item) {
-                if ($_POST['search']['value']) {
-                    if ($i === 0) {
-                        $builder->where($data_where);
-                        $builder->like($item, $_POST['search']['value']);
-                    } else {
-                        $builder->where($data_where);
-                        $builder->orLike($item, $_POST['search']['value']);
-                    }
-                }
-                $i++;
-            }
-        }
-
-        if (isset($_POST['order'])) {
+        $builder = $this->getBaseQuery();
+        
+        // Apply additional where conditions
+        if (!empty($data_where)) {
             $builder->where($data_where);
-            $builder->orderBy($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else if (isset($this->order)) {
-            $builder->where($data_where);
-            $order = $this->order;
-            $builder->orderBy(key($order), $order[key($order)]);
-        }
-        if ($_POST['length'] != -1) {
-            $builder->limit($_POST['length'], $_POST['start']);
         }
 
-        $builder->join('department as dp', 'dp.department_id = emp.department_id', 'left');
+        // Apply search filters
+        $this->applySearchFilters($builder);
+        
+        // Apply ordering
+        $this->applyOrdering($builder);
+        
+        // Apply pagination
+        if (isset($_POST['length']) && $_POST['length'] != -1) {
+            $builder->limit($_POST['length'], $_POST['start'] ?? 0);
+        }
 
-        $query = $builder->get()->getResultArray();
-        // echo $this->db->getLastQuery();
-        return $query;
+        return $builder->get()->getResultArray();
     }
 
     public function count_InActiveRecordsfiltered($data_where) {
-        $db = \Config\Database::connect();
-        $builder = $db->table('employee as emp');
-        $builder->select('emp.*,dp.department_name');
-        $i = 0;
-
+        $builder = $this->getBaseQuery();
         $data_where['emp.status'] = 0;
-        $this->applySearchFilters($builder, $data_where);
-
-        $builder->join('department as dp', 'dp.department_id = emp.department_id', 'left');
-
-        $query = $builder->get()->getResultArray();
-        return count($query);
-    }
-
-    public function count_ActiveRecordsfiltered($data_where) {
-        $db = \Config\Database::connect();
-        $builder = $db->table('employee as emp');
-        $builder->select('emp.*,dp.department_name');
-        $i = 0;
-
-        $data_where['emp.status'] = 1;
-        $this->applySearchFilters($builder, $data_where);
         
-        $builder->join('department as dp', 'dp.department_id = emp.department_id', 'left');
-
-        $query = $builder->get()->getResultArray();
-        return count($query);
-    }
-
-    public function count_filtered($data_where) {
-        $db = \Config\Database::connect();
-        $builder = $db->table('employee as emp');
-        $builder->select('emp.*,dp.department_name');
-
-        $this->applySearchFilters($builder, $data_where);
-        $builder->where($data_where);
+        if (!empty($data_where)) {
+            $builder->where($data_where);
+        }
         
-        $builder->join('department as dp', 'dp.department_id = emp.department_id', 'left');
-
-        $query = $builder->get()->getResultArray();
-        return count($query);
-    }
-
-    public function count_all($data_where) {
-        $db = \Config\Database::connect();
-        $builder = $db->table('employee as emp');
-        $builder->select('emp.*,dp.department_name');
-        $builder->join('department as dp', 'dp.department_id = emp.department_id', 'left');
-        $data_where['emp.status !='] = 2;
-        $this->applySearchFilters($builder, $data_where);
+        $this->applySearchFilters($builder);
+        
         return $builder->countAllResults();
     }
 
-    private function applySearchFilters($builder, $data_where) {
-        $i = 0;
-
-        if (isset($_POST['search']['value']) && $_POST['search']['value'] != '' && $_POST['search']['value'] != null) {
-            foreach ($this->column_search as $item) {
-                if ($_POST['search']['value']) {
-                    if ($i === 0) {
-                        $builder->where($data_where);
-                        $builder->like($item, $_POST['search']['value']);
-                    } else {
-                        $builder->orLike($item, $_POST['search']['value']);
-                        $builder->where($data_where);
-                    }
-                }
-                $i++;
-            }
+    public function count_ActiveRecordsfiltered($data_where) {
+        $builder = $this->getBaseQuery();
+        $data_where['emp.status'] = 1;
+        
+        if (!empty($data_where)) {
+            $builder->where($data_where);
         }
+        
+        $this->applySearchFilters($builder);
+        
+        return $builder->countAllResults();
+    }
 
+    public function count_filtered($data_where) {
+        $builder = $this->getBaseQuery();
+        
+        if (!empty($data_where)) {
+            $builder->where($data_where);
+        }
+        
+        $this->applySearchFilters($builder);
+        
+        return $builder->countAllResults();
+    }
+
+    public function count_all($data_where) {
+        $builder = $this->getBaseQuery();
+        
+        if (!empty($data_where)) {
+            $builder->where($data_where);
+        }
+        
+        return $builder->countAllResults();
+    }
+
+    private function applySearchFilters($builder) {
+        if (isset($_POST['search']['value']) && !empty($_POST['search']['value'])) {
+            $searchValue = $_POST['search']['value'];
+            
+            $builder->groupStart();
+            foreach ($this->column_search as $i => $item) {
+                if ($i === 0) {
+                    $builder->like($item, $searchValue);
+                } else {
+                    $builder->orLike($item, $searchValue);
+                }
+            }
+            $builder->groupEnd();
+        }
+    }
+
+    private function applyOrdering($builder) {
         if (isset($_POST['order'])) {
-            $builder->where($data_where);
-            $builder->orderBy($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else if (isset($this->order)) {
-            $builder->where($data_where);
-            $order = $this->order;
-            $builder->orderBy(key($order), $order[key($order)]);
+            $columnIndex = $_POST['order']['0']['column'];
+            $direction = $_POST['order']['0']['dir'];
+            
+            if (isset($this->column_order[$columnIndex])) {
+                $builder->orderBy($this->column_order[$columnIndex], $direction);
+            }
+        } else {
+            // Apply default ordering
+            foreach ($this->order as $column => $direction) {
+                $builder->orderBy($column, $direction);
+                break; // Only apply the first default order
+            }
         }
     }
 }
