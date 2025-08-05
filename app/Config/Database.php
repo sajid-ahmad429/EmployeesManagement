@@ -32,7 +32,7 @@ class Database extends Config
         'database'     => 'sajid_ahmad',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
-        'pConnect'     => false,
+        'pConnect'     => true,
         'DBDebug'      => true,
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
