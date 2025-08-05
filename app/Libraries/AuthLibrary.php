@@ -24,6 +24,7 @@ use Config\Email;
 use Config\App;
 use \Config\Services;
 use App\Models\DepartmentModel;
+use App\Libraries\EmailQueueLibrary;
 
 /**
  * AuthLibrary
@@ -38,6 +39,7 @@ class AuthLibrary {
         $this->AppConfig = new App;
         $this->Session = session();
         $this->request = Services::request();
+        $this->emailQueue = new EmailQueueLibrary();
     }
 
     /**
@@ -108,8 +110,17 @@ class AuthLibrary {
             // SET THE TOKEN TYPE AS SECOND PARAMETER. Reset password token = 'reset_token'
             $encodedtoken = $this->GenerateToken($user, 'activate_token');
 
-            // GENERATE AND SEND ACTIVATION EMAIL
-            $result = $this->ActivateEmail($user, $encodedtoken);
+            // QUEUE ACTIVATION EMAIL FOR ASYNCHRONOUS PROCESSING
+            $emailData = [
+                'to' => $user['email'],
+                'to_name' => $user['employee_name'],
+                'subject' => 'Account Activation',
+                'message' => $this->generateActivationEmailContent($user, $encodedtoken),
+                'template' => 'activation',
+                'priority' => 2, // High priority for activation emails
+            ];
+
+            $result = $this->emailQueue->queueEmail($emailData);
 
             if ($result) {
                 $this->Session->setFlashData('success', lang('Auth.accountCreated'));
@@ -170,10 +181,20 @@ class AuthLibrary {
         // Make the token URL-safe
         $encodedtoken_url_safe = rtrim(strtr(base64_encode($secureToken), '+/', '-_'), '=');
 
-        // Now, create the reset link
-        $resetLink = site_url('resetpassword/' . $encodedtoken_url_safe);
-        // You can return the reset link or store it for further use
-        return $resetLink;  // Return the generated link instead of sending an email
+        // QUEUE PASSWORD RESET EMAIL FOR ASYNCHRONOUS PROCESSING
+        $emailData = [
+            'to' => $user['email'],
+            'to_name' => $user['employee_name'],
+            'subject' => 'Password Reset Request',
+            'message' => $this->generatePasswordResetEmailContent($user, $resetLink),
+            'template' => 'password_reset',
+            'priority' => 1, // Highest priority for password reset emails
+        ];
+
+        $this->emailQueue->queueEmail($emailData);
+
+        // Return success message instead of link
+        return 'Password reset email has been queued for delivery.';
     }
 
 
@@ -520,6 +541,61 @@ class AuthLibrary {
 //        print_r($_SESSION);
 //        print_r($redirect);exit;
         return $redirect[$this->Session->get('employee_type')];
+    }
+
+    /**
+     * Generate activation email content
+     * 
+     * @param array $user
+     * @param string $token
+     * @return string
+     */
+    private function generateActivationEmailContent($user, $token)
+    {
+        $activationLink = site_url('activate/' . $token);
+        
+        return "
+        <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+            <h2 style='color: #333;'>Welcome to Employee Management System</h2>
+            <p>Hello {$user['employee_name']},</p>
+            <p>Thank you for registering with our Employee Management System. To complete your registration, please click the activation link below:</p>
+            <p style='text-align: center; margin: 30px 0;'>
+                <a href='{$activationLink}' style='background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;'>
+                    Activate Account
+                </a>
+            </p>
+            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+            <p style='word-break: break-all; color: #666;'>{$activationLink}</p>
+            <p>This link will expire in 24 hours.</p>
+            <p>Best regards,<br>Employee Management System Team</p>
+        </div>";
+    }
+
+    /**
+     * Generate password reset email content
+     * 
+     * @param array $user
+     * @param string $resetLink
+     * @return string
+     */
+    private function generatePasswordResetEmailContent($user, $resetLink)
+    {
+        return "
+        <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+            <h2 style='color: #333;'>Password Reset Request</h2>
+            <p>Hello {$user['employee_name']},</p>
+            <p>We received a request to reset your password. If you didn't make this request, you can safely ignore this email.</p>
+            <p>To reset your password, please click the button below:</p>
+            <p style='text-align: center; margin: 30px 0;'>
+                <a href='{$resetLink}' style='background-color: #dc3545; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;'>
+                    Reset Password
+                </a>
+            </p>
+            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+            <p style='word-break: break-all; color: #666;'>{$resetLink}</p>
+            <p>This link will expire in 1 hour for security reasons.</p>
+            <p>Best regards,<br>Employee Management System Team</p>
+        </div>";
     }
 
 }
