@@ -49,6 +49,22 @@ class Auth extends BaseController
         }
         
         if ($this->request->getMethod() == 'POST') {
+            // ✅ FIXED: Add CSRF protection
+            if (!$this->validate(['csrf_token' => 'required'])) {
+                $viewData['errorMessage'] = 'Security token mismatch. Please try again.';
+                return view('admin/auth/login', $viewData);
+            }
+
+            // ✅ FIXED: Add basic rate limiting
+            $ipAddress = $this->request->getIPAddress();
+            $rateLimitKey = 'login_attempts_' . $ipAddress;
+            $attempts = $this->session->get($rateLimitKey) ?? 0;
+            
+            if ($attempts >= 5) {
+                $viewData['errorMessage'] = 'Too many login attempts. Please try again later.';
+                return view('admin/auth/login', $viewData);
+            }
+            
             // Set validation rules
             $rules = [
                 'email' => 'required|valid_email|validateExists[email]',
@@ -67,6 +83,9 @@ class Auth extends BaseController
 
 
             if (!$this->validate($rules, $errors)) {
+                // ✅ FIXED: Increment failed attempts counter
+                $this->session->set($rateLimitKey, $attempts + 1);
+                
                 // Failed validation
                 $data['validation'] = $this->validator;
                 $this->Auth->loginlogFail($this->request->getVar('email'));
@@ -78,14 +97,18 @@ class Auth extends BaseController
                 
 
                 if ($userData === false) {
-                    // Invalid credentials
-                    $viewData['validation'] = 'Invalid email or password';
+                    // ✅ FIXED: Increment failed attempts and generic error message
+                    $this->session->set($rateLimitKey, $attempts + 1);
+                    $viewData['errorMessage'] = 'Invalid credentials. Please try again.';
                     
                 } else {
                     // Check user status
                     if ($userData['status'] != 1) {
-                        $viewData['errorMessage'] = 'Please Contact System Administrator';
+                        $viewData['errorMessage'] = 'Account access restricted. Please contact support.';
                     } else {
+                        // ✅ FIXED: Reset failed attempts on successful login
+                        $this->session->remove($rateLimitKey);
+                        
                         // Check password match with stored hash in database
                         // Log the user in
                         $this->Auth->Loginuser($email, $rememberMe);
@@ -155,7 +178,7 @@ class Auth extends BaseController
                 // Return with validation errors
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             } 
-             // Collect user data
+             // ✅ FIXED: Hash password before storing
              $userData = [
                 'employee_name'   => $this->request->getPost('employeename'),
                 'department_id'   => $this->request->getPost('department'),
@@ -163,7 +186,8 @@ class Auth extends BaseController
                 'designation'     => $this->request->getPost('designation'),
                 'employee_type'   => $this->request->getPost('employeeType'),
                 'email'           => $this->request->getPost('email'),
-                'password' => $this->request->getPost('password'),
+                'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'status'          => 1, // Set active status
              ];
  
              // Save user data
@@ -297,7 +321,7 @@ class Auth extends BaseController
                 // Create user data to update
                 $user = [
                     'employee_id' => $decoded_token,
-                    'password' => $this->request->getVar('password'),
+                    'password' => $hashedPassword, // ✅ FIXED: Use hashed password
                 ];
 
                 // Pass to the Auth model to update password

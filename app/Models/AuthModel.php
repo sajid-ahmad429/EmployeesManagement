@@ -67,26 +67,25 @@ class AuthModel extends Model {
     }
 
     public function verifyUser($email, $password, $role) {
-
-//        $data['password'] = password_hash($password, PASSWORD_DEFAULT);
-        $data['email'] = trim($email);
-        $data['employee_type'] = $role;
+        // ✅ FIXED: Use parameterized queries to prevent SQL injection
         $builder = $this->db->table('employee');
-//        $builder->select('id', 'status', 'firstname', 'password');
-        $builder->where($data);
+        $builder->select('employee_id, status, password');
+        $builder->where('email', trim($email));
+        $builder->where('employee_type', $role);
         $result = $builder->get()->getResultArray();
+        
         if ($result != NULL && isset($result[0]['password'])) {
             if ($result[0]['status'] != 1) {
-                return 2;
+                return 2; // Account disabled
             } else {
                 if (password_verify($password, $result[0]['password'])) {
-                    return 1;
+                    return 1; // Success
                 } else {
-                    return 0;
+                    return 0; // Wrong password
                 }
             }
         } else {
-            return 0;
+            return 0; // User not found
         }
     }
 
@@ -111,6 +110,117 @@ class AuthModel extends Model {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get authentication token by user ID
+     *
+     * @param  int $userID
+     * @return object|null
+     */
+    public function GetAuthTokenByUserId($userID) {
+        return $this->db->table('auth_tokens')
+                       ->where('user_id', $userID)
+                       ->get()
+                       ->getRow();
+    }
+
+    /**
+     * Get authentication token by selector
+     *
+     * @param  string $selector
+     * @return object|null
+     */
+    public function GetAuthTokenBySelector($selector) {
+        return $this->db->table('auth_tokens')
+                       ->where('selector', $selector)
+                       ->get()
+                       ->getRow();
+    }
+
+    /**
+     * Insert new authentication token
+     *
+     * @param  array $data
+     * @return bool
+     */
+    public function insertToken($data) {
+        return $this->db->table('auth_tokens')
+                       ->insert($data);
+    }
+
+    /**
+     * Update authentication token
+     *
+     * @param  array $data
+     * @return bool
+     */
+    public function updateToken($data) {
+        return $this->db->table('auth_tokens')
+                       ->where('user_id', $data['user_id'])
+                       ->update($data);
+    }
+
+    /**
+     * Update selector
+     *
+     * @param  array $data
+     * @param  string $selector
+     * @return bool
+     */
+    public function UpdateSelector($data, $selector) {
+        return $this->db->table('auth_tokens')
+                       ->where('selector', $selector)
+                       ->update($data);
+    }
+
+    /**
+     * Delete token by user ID
+     *
+     * @param  int $userID
+     * @return bool
+     */
+    public function DeleteTokenByUserId($userID) {
+        return $this->db->table('auth_tokens')
+                       ->where('user_id', $userID)
+                       ->delete();
+    }
+
+    /**
+     * Insert password reset token
+     *
+     * @param  array $data
+     * @return bool
+     */
+    public function insertPasswordResetToken($data) {
+        return $this->db->table('password_reset_tokens')
+                       ->insert($data);
+    }
+
+    /**
+     * Get password reset token
+     *
+     * @param  string $token
+     * @return object|null
+     */
+    public function getPasswordResetToken($token) {
+        return $this->db->table('password_reset_tokens')
+                       ->where('token', $token)
+                       ->where('expires_at >', date('Y-m-d H:i:s'))
+                       ->get()
+                       ->getRow();
+    }
+
+    /**
+     * Delete password reset token
+     *
+     * @param  string $token
+     * @return bool
+     */
+    public function deletePasswordResetToken($token) {
+        return $this->db->table('password_reset_tokens')
+                       ->where('token', $token)
+                       ->delete();
     }
 
 }
